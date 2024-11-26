@@ -8,15 +8,19 @@ public class TesseractOCRImageRepo : IDisposable
     private readonly tess.IResultRenderer renderer;
     private readonly tess.TesseractEngine engine;
 
-    public TesseractOCRImageRepo(string tessDataPath,
-        string languageCode,
-        string outputPDFPath)
+    public TesseractOCRImageRepo(model.TesseractSetupParameters options)
     {
-        this.renderer = tess.PdfResultRenderer.CreatePdfRenderer(outputFilename: outputPDFPath,
-            fontDirectory: tessDataPath,
+
+        if (!System.IO.Directory.Exists(options.TessDataPath))
+        {
+            throw new Exception($"Tesseract data path directory [path={options.TessDataPath}] does not exist.   This data path is required for tesseract to work");
+        }
+        
+        this.renderer = tess.PdfResultRenderer.CreatePdfRenderer(outputFilename: options.outputPDFPath,
+            fontDirectory: options.TessDataPath,
             textonly: false);
-        this.engine = new tess.TesseractEngine(datapath: tessDataPath,
-            language: languageCode,
+        this.engine = new tess.TesseractEngine(datapath: options.TessDataPath,
+            language: options.Language,
             engineMode: tess.EngineMode.TesseractAndLstm);
     }
 
