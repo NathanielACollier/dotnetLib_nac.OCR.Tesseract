@@ -13,7 +13,7 @@ public static class ocrRepo
         {
             using (var tesseractWorker = new repositories.TesseractOCRImageRepo(tessOptions))
             {
-                using (var pdfImageReader = new repositories.PDFDocImageReader(pdfFilePath: inputPDFPath))
+                using (var pdfImageReader = new nac.PDFUtilityLib.repositories.PDFDocImageReader(pdfFilePath: inputPDFPath))
                 {
                     log.Info($"PDF has {pdfImageReader.PageCount} pages");
                     for (int pageIndex = 0; pageIndex <= pdfImageReader.PageCount; pageIndex++)
